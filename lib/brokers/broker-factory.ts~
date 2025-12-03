@@ -1,0 +1,28 @@
+import { BaseBroker, type BrokerConfig } from './base-broker'
+import { AlpacaBroker } from './alpaca-broker'
+import { InteractiveBrokersBroker } from './interactive-brokers'
+import { TDAmeritradeBroker } from './td-ameritrade'
+
+export class BrokerFactory {
+  static createBroker(config: BrokerConfig): BaseBroker {
+    const type = config.type.toLowerCase()
+
+    switch (type) {
+      case 'alpaca':
+        return new AlpacaBroker(config)
+      case 'interactive brokers':
+      case 'interactivebrokers':
+      case 'ibkr':
+        return new InteractiveBrokersBroker(config)
+      case 'td ameritrade':
+      case 'tdameritrade':
+        return new TDAmeritradeBroker(config)
+      default:
+        throw new Error(`Unsupported broker type: ${config.type}`)
+    }
+  }
+
+  static getSupportedBrokers(): string[] {
+    return ['Alpaca', 'Interactive Brokers', 'TD Ameritrade']
+  }
+}

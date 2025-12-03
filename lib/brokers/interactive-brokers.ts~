@@ -1,0 +1,117 @@
+import { BaseBroker, type BrokerConfig, type Account, type Position, type Order, type OrderResult } from './base-broker'
+
+export class InteractiveBrokersBroker extends BaseBroker {
+  private baseUrl: string
+
+  constructor(config: BrokerConfig) {
+    super(config)
+    this.baseUrl = config.apiEndpoint || 'https://localhost:5000'
+  }
+
+  private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`IBKR API error: ${response.statusText}`)
+    }
+
+    return response.json()
+  }
+
+  async verifyConnection(): Promise<{ success: boolean; account?: Account; error?: string }> {
+    try {
+      const account = await this.getAccount()
+      return { success: true, account }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Connection failed' }
+    }
+  }
+
+  async getAccount(): Promise<Account> {
+    const data = await this.request<any>('/v1/api/portfolio/accounts')
+    return {
+      equity: parseFloat(data.netliquidation?.amount || '0'),
+      buyingPower: parseFloat(data.buyingpower?.amount || '0'),
+      cash: parseFloat(data.totalcashvalue?.amount || '0'),
+      status: 'active'
+    }
+  }
+
+  async getPositions(): Promise<Position[]> {
+    const data = await this.request<any[]>('/v1/api/portfolio/positions')
+    return data.map(p => ({
+      symbol: p.contractDesc,
+      qty: p.position,
+      side: p.position > 0 ? 'long' : 'short',
+      entryPrice: p.avgCost,
+      currentPrice: p.mktPrice,
+      unrealizedPL: p.unrealizedPnl,
+      unrealizedPLPercent: (p.unrealizedPnl / (p.avgCost * Math.abs(p.position))) * 100
+    }))
+  }
+
+  async getMarketPrice(symbol: string): Promise<number> {
+    const data = await this.request<any>(`/v1/api/md/snapshot?conids=${symbol}`)
+    return data[0]?.last || 0
+  }
+
+  async placeOrder(order: Order): Promise<OrderResult> {
+    const result = await this.request<any>('/v1/api/iserver/account/orders', {
+      method: 'POST',
+      body: JSON.stringify({
+        conid: order.symbol,
+        orderType: order.type.toUpperCase(),
+        side: order.side.toUpperCase(),
+        quantity: order.qty,
+        price: order.limitPrice,
+        tif: order.timeInForce.toUpperCase()
+      })
+    })
+
+    return {
+      id: result.order_id,
+      status: result.order_status,
+      symbol: order.symbol,
+      qty: order.qty,
+      side: order.side
+    }
+  }
+
+  async cancelOrder(orderId: string): Promise<void> {
+    await this.request(`/v1/api/iserver/account/order/${orderId}`, { method: 'DELETE' })
+  }
+
+  async cancelAllOrders(): Promise<void> {
+    const orders = await this.request<any[]>('/v1/api/iserver/account/orders')
+    await Promise.all(orders.map(o => this.cancelOrder(o.orderId)))
+  }
+
+  async closePosition(symbol: string): Promise<void> {
+    const positions = await this.getPositions()
+    const position = positions.find(p => p.symbol === symbol)
+    if (position) {
+      await this.placeOrder({
+        symbol,
+        qty: Math.abs(position.qty),
+        side: position.side === 'long' ? 'sell' : 'buy',
+        type: 'market',
+        timeInForce: 'day'
+      })
+    }
+  }
+
+  async closeAllPositions(): Promise<void> {
+    const positions = await this.getPositions()
+    await Promise.all(positions.map(p => this.closePosition(p.symbol)))
+  }
+
+  async isMarketOpen(): Promise<boolean> {
+    return true // IBKR handles this internally
+  }
+}

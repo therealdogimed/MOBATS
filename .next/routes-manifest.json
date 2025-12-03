@@ -1,0 +1,201 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/brokers/[id]",
+      "regex": "^/api/brokers/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/brokers/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/brokers/[id]/capital",
+      "regex": "^/api/brokers/([^/]+?)/capital(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/brokers/(?<nxtPid>[^/]+?)/capital(?:/)?$"
+    },
+    {
+      "page": "/api/brokers/[id]/stop",
+      "regex": "^/api/brokers/([^/]+?)/stop(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/brokers/(?<nxtPid>[^/]+?)/stop(?:/)?$"
+    },
+    {
+      "page": "/api/data-sources/[id]",
+      "regex": "^/api/data\\-sources/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/data\\-sources/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/strategies/[id]/allocation",
+      "regex": "^/api/strategies/([^/]+?)/allocation(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/strategies/(?<nxtPid>[^/]+?)/allocation(?:/)?$"
+    },
+    {
+      "page": "/api/strategies/[id]/control",
+      "regex": "^/api/strategies/([^/]+?)/control(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/strategies/(?<nxtPid>[^/]+?)/control(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/allocation-mode",
+      "regex": "^/api/allocation\\-mode(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/allocation\\-mode(?:/)?$"
+    },
+    {
+      "page": "/api/bot/control",
+      "regex": "^/api/bot/control(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/bot/control(?:/)?$"
+    },
+    {
+      "page": "/api/bot/status",
+      "regex": "^/api/bot/status(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/bot/status(?:/)?$"
+    },
+    {
+      "page": "/api/brokers",
+      "regex": "^/api/brokers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/brokers(?:/)?$"
+    },
+    {
+      "page": "/api/brokers/alpaca/verify",
+      "regex": "^/api/brokers/alpaca/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/brokers/alpaca/verify(?:/)?$"
+    },
+    {
+      "page": "/api/control/all",
+      "regex": "^/api/control/all(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/control/all(?:/)?$"
+    },
+    {
+      "page": "/api/dashboard",
+      "regex": "^/api/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/dashboard(?:/)?$"
+    },
+    {
+      "page": "/api/data-sources",
+      "regex": "^/api/data\\-sources(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/data\\-sources(?:/)?$"
+    },
+    {
+      "page": "/api/emergency",
+      "regex": "^/api/emergency(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/emergency(?:/)?$"
+    },
+    {
+      "page": "/api/export",
+      "regex": "^/api/export(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/export(?:/)?$"
+    },
+    {
+      "page": "/api/logs",
+      "regex": "^/api/logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/logs(?:/)?$"
+    },
+    {
+      "page": "/api/settings",
+      "regex": "^/api/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/settings(?:/)?$"
+    },
+    {
+      "page": "/api/strategies",
+      "regex": "^/api/strategies(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/strategies(?:/)?$"
+    },
+    {
+      "page": "/api/strategies/shutdown",
+      "regex": "^/api/strategies/shutdown(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/strategies/shutdown(?:/)?$"
+    },
+    {
+      "page": "/api/terminal",
+      "regex": "^/api/terminal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/terminal(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

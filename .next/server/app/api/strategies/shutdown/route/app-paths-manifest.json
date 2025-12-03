@@ -1,0 +1,3 @@
+{
+  "/api/strategies/shutdown/route": "app/api/strategies/shutdown/route.js"
+}

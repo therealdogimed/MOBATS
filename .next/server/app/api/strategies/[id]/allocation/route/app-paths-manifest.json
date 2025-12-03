@@ -1,0 +1,3 @@
+{
+  "/api/strategies/[id]/allocation/route": "app/api/strategies/[id]/allocation/route.js"
+}
